@@ -32,7 +32,7 @@ INSERT INTO `admin` (`id`, `nome`, `email`, `usuario`, `senha`) VALUES
 	(1, 'Cesar', 'cesar@senac.com.br', 'cesar@senac.com.br', '$2y$10$d8Hpwwj/DENEW4sBuUDvUuCw4/2QgEoWvs8YlAXASltHqw5w7vKDm'),
 	(2, 'Kelly', 'kelly@senac.com.br', 'kelly@senac.com.br', '$2y$10$vbRUBxSLOCK00HsOd4Djxu.6I8JWzqMkhR2UwdMiCKvvB3lq/yD1u'),
 	(3, 'Jessica', 'jessica@senac.com.br', 'jessica@senac.com.br', '$2y$10$3QR5vemGVmxMXNh68/XdHumXRSpK6UXdl7yK9dmqLfh4QSw.lKMPy'),
-	(5, 'Ewerson Manoel dos Santos Silva', 'ewerson@msn.com', 'ewerson', '$2y$10$4RUoEog0Y72jcLMlUo97cuLC0/Llk05UJ7Br6lm8y9cD0s6x6hQP.');
+	(5, 'Alvaro Dias', 'sada@msn.com', 'ewerson', '$2y$10$4RUoEog0Y72jcLMlUo97cuLC0/Llk05UJ7Br6lm8y9cD0s6x6hQP.');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela cisterna.areas
@@ -165,8 +165,8 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 -- Copiando dados para a tabela cisterna.usuarios: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `cpf`, `ddd`, `telefone`, `endereco`, `cidade`, `estado`, `bairro`, `latitude`, `longitude`, `area`, `memb_familia`, `senha`, `type`, `situacoe_id`, `niveis_acesso_id`, `created`, `modified`) VALUES
-	(1, 'Ewerson Manoel dos Santos Silva', 'ewerson@msn.com', '30153791861', 11, 973786946, '', 'Guarulhos', 'SP', 'continental', -25.494970, -49.294357, 12, 5, 'senha', 'usuario', 0, NULL, NULL, NULL),
-	(3, 'Manoel dos Santos Silva', 'ewerson@msn.com', '11153791861', 11, 2147483647, '', 'Guarulhos', 'SP', 'continental', -25.894970, -49.874355, 12, 5, 'senha', NULL, 0, NULL, NULL, NULL);
+	(1, 'Santos Manoel', 'fdgdfgdfg@msn.com', '25656581856', 11, 9839999, '', 'Guarulhos', 'SP', 'continental', -25.494970, -49.294357, 12, 5, 'senha', 'usuario', 0, NULL, NULL, NULL),
+	(3, 'Manoel dos Santos', 'fdggdfg@msn.com', '11153791861', 11, 2147483647, '', 'Guarulhos', 'SP', 'continental', -25.894970, -49.874355, 12, 5, 'senha', NULL, 0, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela cisterna.vol_mensal
