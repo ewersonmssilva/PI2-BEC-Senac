@@ -9,13 +9,13 @@
 #define usuario 1
 
 // DB Config
-IPAddress server_addr(192, 168, 0, 36); // IP of the MySQL server here
+IPAddress server_addr(192, 168, 0, 0); // IP of the MySQL server here
 char user[] = "root"; // MySQL user login username
 char password[] = "senha"; // MySQL user login password
 
 // WiFi Config
-char ssid[] = "NetVirtua-80"; // your SSID
-char pass[] = "ferreirasantos"; // your SSID Password
+char ssid[] = "SSID-DA-REDE"; // your SSID
+char pass[] = "SENHA-WIFI"; // your SSID Password
 byte mac[6];
 
 // INSERT
