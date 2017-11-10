@@ -16,11 +16,11 @@ byte mac[6];
 // Definir aqui o numero do usuario para ser identificado no DB
 #define usuario 1
 // Número máximo de falha de conexão com MySQL antes de reiniciar o sistema.
-#define MAX_FAILED_CONNECTS 5
+#define MAX_FAILED_CONNECTS 2
 
 // Configurações do Banco de Dados
-IPAddress server_addr(192, 168, 0, 0); // IP of the MySQL server here
+IPAddress server_addr(192, 168, 0, 00); // IP of the MySQL server here
 char user[] = "root"; // MySQL user login username
-char password[] = "XXXXXX"; // MySQL user login password
+char password[] = "senha"; // MySQL user login password
 
 #endif

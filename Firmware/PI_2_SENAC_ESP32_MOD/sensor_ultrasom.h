@@ -5,7 +5,7 @@
 
 // Inicio da função dos sensores
 float media (int n, float *v_ultrason);
-float sens_ultra = 0;
+float sens_ultra = 10;
 long duration;
 float distance;
 float v_ultrason[10];

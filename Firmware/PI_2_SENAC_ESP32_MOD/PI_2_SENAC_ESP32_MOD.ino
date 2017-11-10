@@ -1,3 +1,9 @@
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
+#endif
+
 //#include "config.h"
 #include "sensor_ultrasom.h"
 #include "sensor_fluxo.h"
@@ -5,6 +11,31 @@
 #include "envia_recebe_dados.h"
 #include "data_hora.h"
 #include "display.h"
+
+// Funcoes Multitarefas
+void tarefa1( void * pvParameters ) {
+  while (true) {
+    conta_litros();
+    mede_distacia();
+    RtcDateTime now = Rtc.GetDateTime();
+    printDateTime(now);
+    Display();
+    Serial.print("   Core: ");
+    Serial.print(xPortGetCoreID());
+    Serial.print("   ");
+    delay(1000);
+  }
+}
+
+void tarefa2( void * pvParameters ) {
+  while (true) {
+    conectaDB();
+    Serial.print("   Core: ");
+    Serial.print(xPortGetCoreID());
+    Serial.print("   ");
+    delay(1000);
+  }
+}
 
 void setup() {
   Serial.begin(115200);
@@ -14,7 +45,7 @@ void setup() {
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
 
   // Sensor de Fluxo
-  // Inicialização da variável "buttonPin" como INPUT (D2 pin)
+  // Inicializacao da variavel "buttonPin" como INPUT (D2 pin)
   pinMode(flowmeter, INPUT);
   // Anexe uma interrupção ao vetor flowmeter
   attachInterrupt(digitalPinToInterrupt(flowmeter), flow, RISING); // Setup Interrupt
@@ -24,9 +55,9 @@ void setup() {
   tft.init();
   tft.setRotation(1);
 
-// Imprimo no display informações da inicialização
+  // Imprimo no display informações da inicializa��o
   tft.setTextSize(1);
-  tft.fillScreen(TFT_BLACK);  
+  tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.drawString("ENGENHARIA", 10, 5, 1);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -40,9 +71,9 @@ void setup() {
 
   while (!Serial); // Aguarda a porta serial conectar
 
-  // Inicio da seção WiFi
+  // Inicio da secao WiFi
   WiFi.begin(ssid, pass);
-  // Aguarde a conexão
+  // Aguarde a conexao
   Serial.print ( "Conectando na rede." );
 
   tft.setTextColor(TFT_BLUE, TFT_BLACK);
@@ -70,7 +101,7 @@ void setup() {
     }
   }
   Serial.println("");
-  // Fim da seção WiFi
+  // Fim da secaoo WiFi
 
   // Inicia RTC
   Rtc.Begin();
@@ -116,24 +147,15 @@ void setup() {
   Serial.printf("Used space: %lluMB\n", SD.usedBytes() / (1024 * 1024));
   delay ( 2000 );
   tft.fillScreen(TFT_BLACK);
+  // Inicia multitarefas
+
+  xTaskCreatePinnedToCore(tarefa1, "loop1", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+  xTaskCreatePinnedToCore(tarefa2, "loop2", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+
 }
 
 void loop() {
-  delay(2000);
+  // nope, do nothing here
+  vTaskDelay(portMAX_DELAY); // wait as much as posible ...
 
-  // Chama Função dos sensores
-  conta_litros();
-  mede_distacia();
-
-  RtcDateTime now = Rtc.GetDateTime();
-  printDateTime(now);
-
-  Serial.println();
-
-  uint64_t cardSize = SD.cardSize() / (1024 * 1024);
-  Serial.printf("SD Card Size: %lluMB\n", cardSize);
-
-  //conectaDB();
-
-  Display();
 }

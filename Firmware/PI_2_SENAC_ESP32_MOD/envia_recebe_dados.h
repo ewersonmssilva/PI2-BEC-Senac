@@ -68,7 +68,11 @@ void envia_recebe() {
 
   // Inicio gravação DB
   //
-  Serial.println("> Gravando dados.");
+  Serial.print("> Gravando dados.  ");
+  Serial.print(sens_fluxo);
+  Serial.print(" <-Fluxo / Ultra-> ");
+  Serial.println(sens_ultra);
+  
   // Inicia a consulta da instância de classe
   MySQL_Cursor *cur_memi = new MySQL_Cursor(&conn);
   // Salvar
