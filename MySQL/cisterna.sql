@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
 -- Versão do servidor:           5.6.36-log - MySQL Community Server (GPL)
--- OS do Servidor:               Win32
+-- OS do Servidor:               Win64
 -- HeidiSQL Versão:              9.4.0.5174
 -- --------------------------------------------------------
 
@@ -10,11 +10,6 @@
 /*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
-
--- Copiando estrutura do banco de dados para cisterna
-CREATE DATABASE IF NOT EXISTS `cisterna` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `cisterna`;
 
 -- Copiando estrutura para tabela cisterna.admin
 CREATE TABLE IF NOT EXISTS `admin` (
@@ -32,7 +27,7 @@ INSERT INTO `admin` (`id`, `nome`, `email`, `usuario`, `senha`) VALUES
 	(1, 'Cesar', 'cesar@senac.com.br', 'cesar@senac.com.br', '$2y$10$d8Hpwwj/DENEW4sBuUDvUuCw4/2QgEoWvs8YlAXASltHqw5w7vKDm'),
 	(2, 'Kelly', 'kelly@senac.com.br', 'kelly@senac.com.br', '$2y$10$vbRUBxSLOCK00HsOd4Djxu.6I8JWzqMkhR2UwdMiCKvvB3lq/yD1u'),
 	(3, 'Jessica', 'jessica@senac.com.br', 'jessica@senac.com.br', '$2y$10$3QR5vemGVmxMXNh68/XdHumXRSpK6UXdl7yK9dmqLfh4QSw.lKMPy'),
-	(5, 'Alvaro Dias', 'sada@msn.com', 'ewerson', '$2y$10$4RUoEog0Y72jcLMlUo97cuLC0/Llk05UJ7Br6lm8y9cD0s6x6hQP.');
+	(5, 'Ewerson Manoel dos Santos Silva', 'ewerson@msn.com', 'ewerson', '$2y$10$4RUoEog0Y72jcLMlUo97cuLC0/Llk05UJ7Br6lm8y9cD0s6x6hQP.');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela cisterna.areas
@@ -113,13 +108,16 @@ INSERT INTO `niveis_acessos` (`id`, `nome`, `criado`, `modificado`) VALUES
 -- Copiando estrutura para tabela cisterna.sensores
 CREATE TABLE IF NOT EXISTS `sensores` (
   `user_id` int(11) NOT NULL,
-  `s_ultrasson` int(11) NOT NULL,
-  `s_fluxo` int(11) NOT NULL,
+  `s_ultrasson` float NOT NULL,
+  `s_fluxo` float NOT NULL,
   `criado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela cisterna.sensores: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela cisterna.sensores: ~15 rows (aproximadamente)
 /*!40000 ALTER TABLE `sensores` DISABLE KEYS */;
+INSERT INTO `sensores` (`user_id`, `s_ultrasson`, `s_fluxo`, `criado`) VALUES
+	(1, 7.2, 0, '2017-11-11 18:47:17'),
+	(1, 7.2, 0, '2017-11-11 18:47:32');
 /*!40000 ALTER TABLE `sensores` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela cisterna.tipos_cist
@@ -160,13 +158,14 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `cpf_UNIQUE` (`cpf`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Copiando dados para a tabela cisterna.usuarios: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `cpf`, `ddd`, `telefone`, `endereco`, `cidade`, `estado`, `bairro`, `latitude`, `longitude`, `area`, `memb_familia`, `senha`, `type`, `situacoe_id`, `niveis_acesso_id`, `created`, `modified`) VALUES
-	(1, 'Santos Manoel', 'fdgdfgdfg@msn.com', '25656581856', 11, 9839999, '', 'Guarulhos', 'SP', 'continental', -25.494970, -49.294357, 12, 5, 'senha', 'usuario', 0, NULL, NULL, NULL),
-	(3, 'Manoel dos Santos', 'fdggdfg@msn.com', '11153791861', 11, 2147483647, '', 'Guarulhos', 'SP', 'continental', -25.894970, -49.874355, 12, 5, 'senha', NULL, 0, NULL, NULL, NULL);
+	(1, 'Ewerson Manoel dos Santos Silva', 'ewerson@msn.com', '30153791861', 11, 973786946, '', 'Guarulhos', 'SP', 'continental', -25.494970, -49.294357, 12, 5, 'senha', 'usuario', 0, NULL, NULL, NULL),
+	(3, 'Manoel dos Santos Silva', 'ewerson@msn.com', '11153791861', 11, 2147483647, '', 'Guarulhos', 'SP', 'continental', -25.894970, -49.874355, 12, 5, 'senha', NULL, 0, NULL, NULL, NULL),
+	(4, 'Rogerio', 'ewerson5@msn.com', '56853791861', 11, 973786946, '', 'Guarulhos', 'SP', 'continental', -25.494970, -49.294357, 12, 5, 'senha', NULL, 0, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela cisterna.vol_mensal
