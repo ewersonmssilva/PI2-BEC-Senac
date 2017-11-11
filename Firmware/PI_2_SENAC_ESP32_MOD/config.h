@@ -9,9 +9,8 @@ const int trigPin = 2;
 const int echoPin = 4;
 
 // WiFi Config
-char ssid[] = "XXXXXXX"; // your SSID
-char pass[] = "XXXXXX"; // your SSID Password
-byte mac[6];
+const char* ssid = "SEU-SSID"; // Seu SSID
+const char* pass =  "SUA-SENHA"; // Sua senha
 
 // Definir aqui o numero do usuario para ser identificado no DB
 #define usuario 1
@@ -19,8 +18,8 @@ byte mac[6];
 #define MAX_FAILED_CONNECTS 2
 
 // Configurações do Banco de Dados
-IPAddress server_addr(192, 168, 0, 00); // IP of the MySQL server here
-char user[] = "root"; // MySQL user login username
-char password[] = "senha"; // MySQL user login password
+IPAddress server_addr(192, 168, 0, 0); // IP do servidor MySQL
+char user[] = "root"; // Nome de login do usuário MySQL
+char password[] = "senha"; // Senha de login do usuário MySQL
 
 #endif

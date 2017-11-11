@@ -4,15 +4,14 @@
 #define ARDUINO_RUNNING_CORE 1
 #endif
 
-//#include "config.h"
-#include "sensor_ultrasom.h"
+#include "sensor_ultrason.h"
 #include "sensor_fluxo.h"
-//#include "wifi_conex.h"
+#include "wifi_connect.h"
 #include "envia_recebe_dados.h"
 #include "data_hora.h"
 #include "display.h"
 
-// Funcoes Multitarefas
+// Funções Multitarefas
 void tarefa1( void * pvParameters ) {
   while (true) {
     conta_litros();
@@ -29,33 +28,34 @@ void tarefa1( void * pvParameters ) {
 
 void tarefa2( void * pvParameters ) {
   while (true) {
+    connectToNetwork();
     conectaDB();
     Serial.print("   Core: ");
     Serial.print(xPortGetCoreID());
     Serial.print("   ");
-    delay(1000);
+    delay(10000);
   }
 }
 
 void setup() {
   Serial.begin(115200);
 
-  // Sensor Utrasom
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
-  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+  // Sensor Utrasônico
+  pinMode(trigPin, OUTPUT); // Define o trigPin como uma saída
+  pinMode(echoPin, INPUT); // Define o echoPin como uma Entrada
 
   // Sensor de Fluxo
-  // Inicializacao da variavel "buttonPin" como INPUT (D2 pin)
+  // Inicializacao da variavel "flowmeter" como INPUT (pino 15)
   pinMode(flowmeter, INPUT);
   // Anexe uma interrupção ao vetor flowmeter
-  attachInterrupt(digitalPinToInterrupt(flowmeter), flow, RISING); // Setup Interrupt
-  // see http://arduino.cc/en/Reference/attachInterrupt
+  attachInterrupt(digitalPinToInterrupt(flowmeter), flow, RISING); // Configuração de interrupção
+  // veja http://arduino.cc/en/Reference/attachInterrupt
 
   // Inicia Display TFT
   tft.init();
   tft.setRotation(1);
 
-  // Imprimo no display informações da inicializa��o
+  // Imprimo no display informações da inicializacão
   tft.setTextSize(1);
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -69,40 +69,6 @@ void setup() {
   tft.setTextColor(TFT_YELLOW, TFT_BLACK);
   tft.drawString("Iniciando...", 30, 60, 2);
 
-  while (!Serial); // Aguarda a porta serial conectar
-
-  // Inicio da secao WiFi
-  WiFi.begin(ssid, pass);
-  // Aguarde a conexao
-  Serial.print ( "Conectando na rede." );
-
-  tft.setTextColor(TFT_BLUE, TFT_BLACK);
-  tft.drawString("Conectando rede: ", 10, 90, 1);
-
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    Serial.print ( "." );
-  }
-  Serial.println ( "." );
-  Serial.print ( "Conectado a rede: " );
-
-  tft.setTextColor(TFT_GREEN, TFT_BLACK);
-  tft.drawString("OK!", 108, 90, 1);
-
-  Serial.println ( ssid );
-  Serial.print ( "Endereço IP: " );
-  Serial.println ( WiFi.localIP() );
-  Serial.print("Endereço MAC: ");
-  WiFi.macAddress(mac);
-  for (int i = 0; i < 6; i++) {
-    Serial.print(mac[i], HEX);
-    if (i < 5) {
-      Serial.print(":");
-    }
-  }
-  Serial.println("");
-  // Fim da secaoo WiFi
-
   // Inicia RTC
   Rtc.Begin();
   Rtc.Enable32kHzPin(false);
@@ -113,7 +79,7 @@ void setup() {
   tft.setTextColor(TFT_BLUE, TFT_BLACK);
   tft.drawString("Lendo SDCard: ", 10, 105, 1);
   if (!SD.begin()) {
-    Serial.println("Card Mount Failed");
+    Serial.println("Falha na montagem do cartão");
 
     tft.setTextColor(TFT_RED, TFT_BLACK);
     tft.drawString("Falha!", 90, 105, 1);
@@ -124,7 +90,7 @@ void setup() {
   uint8_t cardType = SD.cardType();
 
   if (cardType == CARD_NONE) {
-    Serial.println("No SD card attached");
+    Serial.println("Nenhum cartão SD anexado");
     return;
   }
 
@@ -138,13 +104,13 @@ void setup() {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
     tft.drawString("OK!", 90, 105, 1);
   } else {
-    Serial.println("UNKNOWN");
+    Serial.println("DESCONHECIDO");
   }
 
   uint64_t cardSize = SD.cardSize() / (1024 * 1024);
-  Serial.printf("SD Card Size: %lluMB\n", cardSize);
-  Serial.printf("Total space: %lluMB\n", SD.totalBytes() / (1024 * 1024));
-  Serial.printf("Used space: %lluMB\n", SD.usedBytes() / (1024 * 1024));
+  Serial.printf("Tamanho do SDCard: %lluMB\n", cardSize);
+  Serial.printf("Espaço total: %lluMB\n", SD.totalBytes() / (1024 * 1024));
+  Serial.printf("Espaço usado: %lluMB\n", SD.usedBytes() / (1024 * 1024));
   delay ( 2000 );
   tft.fillScreen(TFT_BLACK);
   // Inicia multitarefas
@@ -155,7 +121,7 @@ void setup() {
 }
 
 void loop() {
-  // nope, do nothing here
-  vTaskDelay(portMAX_DELAY); // wait as much as posible ...
+  // Não faça nada aqui
+  vTaskDelay(portMAX_DELAY); // aguarde o máximo possível ...
 
 }

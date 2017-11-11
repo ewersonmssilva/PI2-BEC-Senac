@@ -1,11 +1,10 @@
 #ifndef sensor_fluxo_h
 #define sensor_fluxo_h
-
 #include "config.h"
 
 // Sensor de Fluxo
 volatile int  flow_frequency;  // Mede os pulsos do sensor de fluxo
-unsigned int  l_hour;          // Calculado litros/hour
+unsigned int  l_hour;          // Calcula litro/hora
 int litrosAdd = 0;
 float litros = 0;
 //unsigned char flowmeter = 15;  // Número do pino do sensor de fluxo
@@ -31,18 +30,16 @@ void conta_litros() {
   //Sensor Fluxo
   if (contagem_comp != flow_frequency) {
 
-    // Pulse frequency (Hz) = 7.5Q, Q is flow rate in L/min. (Results in +/- 3% range)
-    l_hour = (flow_frequency * 60 / 7.5); // (Pulse frequency x 60 min) / 7.5Q = flow rate in L/hour
-    Serial.print("Flow 1 in Liters: ");
+    // Pulse frequency (Hz) = 7.5Q, Q é taxa de fluxo em L/min. (Resultados em +/- 3%)
+    l_hour = (flow_frequency * 60 / 7.5); // (Freqüência de pulso x 60 min) / 7.5Q = taxa de fluxo em L/hour
+    Serial.print("Fluxo em litros: ");
     Serial.print (l_hour);
 
-    //flow_frequency = 0;                   // Reset Contador
-
     Serial.print("   ");
-    Serial.print(l_hour, DEC);            // Print litres/hour
+    Serial.print(l_hour, DEC);            // Imprime L/hour
     Serial.print(" L/hour     ");
 
-    Serial.print(litros);            // Print litres/hour
+    Serial.print(litros);            // Imprime litros/hour
     Serial.println(" Litros");
     contagem_comp = flow_frequency;
   }
