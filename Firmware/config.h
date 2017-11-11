@@ -15,7 +15,7 @@ const char* pass =  "SUA-SENHA"; // Sua senha
 // Definir aqui o numero do usuario para ser identificado no DB
 #define usuario 1
 // Número máximo de falha de conexão com MySQL antes de reiniciar o sistema.
-#define MAX_FAILED_CONNECTS 2
+#define MAX_FAILED_CONNECTS 4
 
 // Configurações do Banco de Dados
 IPAddress server_addr(192, 168, 0, 0); // IP do servidor MySQL
