@@ -34,7 +34,7 @@ void mede_distacia() {
     i++;
   }
   // Imprime a distância no Monitor Serial
-  Serial.print("Distance: ");
+  Serial.print("Distância: ");
   Serial.print(distance);
 
   //chamada da função

@@ -3,7 +3,7 @@
 WiFiMulti WiFiMulti;
 #include "config.h"
 
-void connectToNetwork() {
+void conecta_wifi() {
     // Inicia a conexão com uma rede Wi-Fi
     WiFiMulti.addAP(ssid, pass);
 
@@ -18,9 +18,9 @@ void connectToNetwork() {
 
     Serial.println("");
     Serial.println("WiFi conectado");
-    Serial.println("Endereço IP: ");
+    Serial.print("Endereço IP: ");
     Serial.println(WiFi.localIP());
-    Serial.println("Endereço MAC: ");
+    Serial.print("Endereço MAC: ");
     Serial.println(WiFi.macAddress());
 
     delay(500);

@@ -28,8 +28,8 @@ void tarefa1( void * pvParameters ) {
 
 void tarefa2( void * pvParameters ) {
   while (true) {
-    connectToNetwork();
-    conectaDB();
+    conecta_wifi();
+    conecta_DB();
     Serial.print("   Core: ");
     Serial.print(xPortGetCoreID());
     Serial.print("   ");
