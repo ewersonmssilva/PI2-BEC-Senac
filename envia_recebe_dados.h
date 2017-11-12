@@ -98,8 +98,7 @@ void envia_recebe() {
     Serial.print("Desconectando... >> ");
     conn.close();
     Serial.println("");
-    
-    WiFi.disconnect(true);
+   // WiFi.disconnect(true);
   }
   num_fails = 0;                 // reseta falhas de conexão
   // Fim leitura e gravação de dados no DB
@@ -107,6 +106,10 @@ void envia_recebe() {
 
 // Inicio da Função de conexão com o Banco de Dados
 void conecta_DB() {
+  if (WiFi.status() != WL_CONNECTED) {
+    conecta_wifi();
+  }
+
   // Inicio conexão, leitura e gravação de dados no DB
   if (conn.connected()) {
     Serial.println("Conectado com sucesso!");

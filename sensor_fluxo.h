@@ -40,7 +40,7 @@ void conta_litros() {
     Serial.print(" L/hour     ");
 
     Serial.print(litros);            // Imprime litros/hour
-    Serial.println(" Litros");
+    Serial.print(" Litros");
     contagem_comp = flow_frequency;
   }
   sens_fluxo = litros;

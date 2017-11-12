@@ -13,26 +13,29 @@
 
 // Funções Multitarefas
 void tarefa1( void * pvParameters ) {
-  while (true) {
-    conta_litros();
-    mede_distacia();
-    RtcDateTime now = Rtc.GetDateTime();
-    printDateTime(now);
-    Display();
-    Serial.print("   Core: ");
+  while (1) {
+    Serial.print("Core: ");
     Serial.print(xPortGetCoreID());
     Serial.print("   ");
+    conta_litros();
+    Serial.print("   ");
+    mede_distacia();
+    Serial.print("   ");
+    dataehora();
+    Display();
+    Serial.println("");
     delay(1000);
   }
 }
 
 void tarefa2( void * pvParameters ) {
-  while (true) {
-    conecta_wifi();
-    conecta_DB();
-    Serial.print("   Core: ");
+  while (1) {
+    Serial.println("");
+    Serial.print("Core: ");
     Serial.print(xPortGetCoreID());
     Serial.print("   ");
+    conecta_DB();
+    Serial.println("");
     delay(10000);
   }
 }
@@ -42,7 +45,7 @@ void setup() {
 
   // Sensor Utrasônico
   pinMode(trigPin, OUTPUT); // Define o trigPin como uma saída
-  pinMode(echoPin, INPUT); // Define o echoPin como uma Entrada
+  pinMode(echoPin, INPUT); // Define o echoPin como uma entrada
 
   // Sensor de Fluxo
   // Inicializacao da variavel "flowmeter" como INPUT (pino 15)
@@ -51,11 +54,11 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(flowmeter), flow, RISING); // Configuração de interrupção
   // veja http://arduino.cc/en/Reference/attachInterrupt
 
-  // Inicia Display TFT
+  // Inicialização do Display TFT
   tft.init();
   tft.setRotation(1);
 
-  // Imprimo no display informações da inicializacão
+  // Imprime no display informações da inicializacão
   tft.setTextSize(1);
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -69,13 +72,10 @@ void setup() {
   tft.setTextColor(TFT_YELLOW, TFT_BLACK);
   tft.drawString("Iniciando...", 30, 60, 2);
 
-  // Inicia RTC
-  Rtc.Begin();
-  Rtc.Enable32kHzPin(false);
-  Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeNone);
+  //Inicialização do RTC DS3231
+  rtc.begin();
 
-
-  // Inicia SDCard
+  // Inicialização do SDCard
   tft.setTextColor(TFT_BLUE, TFT_BLACK);
   tft.drawString("Lendo SDCard: ", 10, 105, 1);
   if (!SD.begin()) {
@@ -113,15 +113,13 @@ void setup() {
   Serial.printf("Espaço usado: %lluMB\n", SD.usedBytes() / (1024 * 1024));
   delay ( 2000 );
   tft.fillScreen(TFT_BLACK);
-  // Inicia multitarefas
 
+  // Inicialização das multitarefas
   xTaskCreatePinnedToCore(tarefa1, "loop1", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
   xTaskCreatePinnedToCore(tarefa2, "loop2", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
-
 }
 
 void loop() {
   // Não faça nada aqui
   vTaskDelay(portMAX_DELAY); // aguarde o máximo possível ...
-
 }

@@ -42,7 +42,7 @@ void mede_distacia() {
     sens_ultra = media(10, v_ultrason);
   }
   Serial.print("    Media: ");
-  Serial.println(sens_ultra);
+  Serial.print(sens_ultra);
 
 }
 

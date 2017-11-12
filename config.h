@@ -18,7 +18,7 @@ const char* pass =  "SUA-SENHA"; // Sua senha
 #define MAX_FAILED_CONNECTS 4
 
 // Configurações do Banco de Dados
-IPAddress server_addr(192, 168, 0, 0); // IP do servidor MySQL
+IPAddress server_addr(192, 168, 0, 36); // IP do servidor MySQL
 char user[] = "root"; // Nome de login do usuário MySQL
 char password[] = "senha"; // Senha de login do usuário MySQL
 
