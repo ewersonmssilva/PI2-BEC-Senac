@@ -1,25 +1,25 @@
-#if CONFIG_FREERTOS_UNICORE
-#define ARDUINO_RUNNING_CORE 0
-#else
-#define ARDUINO_RUNNING_CORE 1
-#endif
+//#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE0 0
+//#else
+#define ARDUINO_RUNNING_CORE1 1
+//#endif
 
+#include "data_hora.h"
 #include "sensor_ultrason.h"
 #include "sensor_fluxo.h"
 #include "wifi_connect.h"
 #include "envia_recebe_dados.h"
-#include "data_hora.h"
 #include "display.h"
 
 // Funções Multitarefas
 void tarefa1( void * pvParameters ) {
-  while (1) {
+  while (true) {
     Serial.print("Core: ");
     Serial.print(xPortGetCoreID());
     Serial.print("   ");
     conta_litros();
     Serial.print("   ");
-    mede_distacia();
+    mede_distancia();
     Serial.print("   ");
     dataehora();
     Display();
@@ -29,14 +29,14 @@ void tarefa1( void * pvParameters ) {
 }
 
 void tarefa2( void * pvParameters ) {
-  while (1) {
-    Serial.println("");
+  while (true) {
     Serial.print("Core: ");
     Serial.print(xPortGetCoreID());
     Serial.print("   ");
     conecta_DB();
+    escreve_SD();
     Serial.println("");
-    delay(10000);
+    delay(1000);
   }
 }
 
@@ -74,6 +74,7 @@ void setup() {
 
   //Inicialização do RTC DS3231
   rtc.begin();
+  atualiza();
 
   // Inicialização do SDCard
   tft.setTextColor(TFT_BLUE, TFT_BLACK);
@@ -115,11 +116,12 @@ void setup() {
   tft.fillScreen(TFT_BLACK);
 
   // Inicialização das multitarefas
-  xTaskCreatePinnedToCore(tarefa1, "loop1", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
-  xTaskCreatePinnedToCore(tarefa2, "loop2", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+  xTaskCreatePinnedToCore(tarefa1, "loop1", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE0);
+  xTaskCreatePinnedToCore(tarefa2, "loop2", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE1);
 }
 
 void loop() {
   // Não faça nada aqui
-  vTaskDelay(portMAX_DELAY); // aguarde o máximo possível ...
+  //vTaskDelay(portMAX_DELAY); // aguarde o máximo possível ...
+  delay(1000);
 }

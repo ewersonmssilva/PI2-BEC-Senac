@@ -98,7 +98,7 @@ void envia_recebe() {
     Serial.print("Desconectando... >> ");
     conn.close();
     Serial.println("");
-   // WiFi.disconnect(true);
+    // WiFi.disconnect(true);
   }
   num_fails = 0;                 // reseta falhas de conexão
   // Fim leitura e gravação de dados no DB
@@ -106,29 +106,31 @@ void envia_recebe() {
 
 // Inicio da Função de conexão com o Banco de Dados
 void conecta_DB() {
-  if (WiFi.status() != WL_CONNECTED) {
-    conecta_wifi();
-  }
+  if (segundos == 10 || segundos == 30 || segundos == 50) {
+    if (WiFi.status() != WL_CONNECTED) {
+      conecta_wifi();
+    }
 
-  // Inicio conexão, leitura e gravação de dados no DB
-  if (conn.connected()) {
-    Serial.println("Conectado com sucesso!");
-    conn.close();                  // Fecha a conexão
-    num_fails = 0;                 // Reiniciar numero de falhas
-  } else {
-    Serial.println("Conectando...");
-    if (conn.connect(server_addr, 3306, user, password)) {
-      delay(1000);
-      // Vai para função envia_recebe
-      envia_recebe();
+    // Inicio conexão, leitura e gravação de dados no DB
+    if (conn.connected()) {
+      Serial.println("Conectado com sucesso!");
+      conn.close();                  // Fecha a conexão
+      num_fails = 0;                 // Reiniciar numero de falhas
     } else {
-      num_fails++;
-      Serial.println("Falha na conexão!");
-      if (num_fails == MAX_FAILED_CONNECTS) {
-        Serial.println("Ok, é isso. Estou fora. Reiniciando...");
-        delay(2000);
-        // Aqui, pedimos para reiniciar redirecionando para a função de reboot.
-        soft_reset();
+      Serial.println("Conectando...");
+      if (conn.connect(server_addr, 3306, user, password)) {
+        delay(1000);
+        // Vai para função envia_recebe
+        envia_recebe();
+      } else {
+        num_fails++;
+        Serial.println("Falha na conexão!");
+        if (num_fails == MAX_FAILED_CONNECTS) {
+          Serial.println("Ok, é isso. Estou fora. Reiniciando...");
+          delay(2000);
+          // Aqui, pedimos para reiniciar redirecionando para a função de reboot.
+          soft_reset();
+        }
       }
     }
   }

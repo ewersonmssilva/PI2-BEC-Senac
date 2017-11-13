@@ -11,7 +11,7 @@ float v_ultrason[10];
 float media_ultra;
 int i;
 
-void mede_distacia() {
+void mede_distancia() {
 
   // Sensor Utrason
   // Limpa o trigPin
