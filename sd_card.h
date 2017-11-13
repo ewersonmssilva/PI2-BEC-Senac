@@ -25,20 +25,20 @@ void writeFile(fs::FS &fs, const char * path, const char * message) {
   file.close();
 }
 
-void appendFile(fs::FS &fs, const char * path, const char * message){
-    Serial.printf("Appending to file: %s\n", path);
+void appendFile(fs::FS &fs, const char * path, const char * message) {
+  Serial.printf("Appending to file: %s\n", path);
 
-    File file = fs.open(path, FILE_APPEND);
-    if(!file){
-        Serial.println("Failed to open file for appending");
-        return;
-    }
-    if(file.print(message)){
-        Serial.println("Message appended");
-    } else {
-        Serial.println("Append failed");
-    }
-    file.close();
+  File file = fs.open(path, FILE_APPEND);
+  if (!file) {
+    Serial.println("Failed to open file for appending");
+    return;
+  }
+  if (file.print(message)) {
+    Serial.println("Message appended");
+  } else {
+    Serial.println("Append failed");
+  }
+  file.close();
 }
 
 
@@ -46,10 +46,10 @@ void escreve_SD() {
   if (minutos == 20 && segundos == 22 || minutos == 40 && segundos == 22 || minutos == 58 && segundos == 22) {
     //writeFile(SD, "/sensores.txt", datestring);
     //appendFile(SD, "/sensores.txt", valor);
+    appendFile(SD, "/sensores.txt", "\n");
     appendFile(SD, "/sensores.txt", "Fluxo  ");
     appendFile(SD, "/sensores.txt", " Ultra ");
     appendFile(SD, "/sensores.txt", datestring);
-    appendFile(SD, "/sensores.txt", "\n");
   }
 }
 #endif
