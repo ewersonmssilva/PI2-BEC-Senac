@@ -122,6 +122,5 @@ void setup() {
 
 void loop() {
   // Não faça nada aqui
-  //vTaskDelay(portMAX_DELAY); // aguarde o máximo possível ...
-  delay(1000);
+  vTaskDelay(portMAX_DELAY); // aguarde o máximo possível ...
 }
