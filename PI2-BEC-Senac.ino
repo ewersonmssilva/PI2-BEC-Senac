@@ -1,8 +1,8 @@
-//#if CONFIG_FREERTOS_UNICORE
-#define ARDUINO_RUNNING_CORE0 0
-//#else
-#define ARDUINO_RUNNING_CORE1 1
-//#endif
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
+#endif
 
 #include "data_hora.h"
 #include "sensor_ultrason.h"
@@ -35,6 +35,10 @@ void tarefa2( void * pvParameters ) {
     Serial.print("   ");
     conecta_DB();
     escreve_SD();
+    if (minutos == 59 && segundos > 55 && segundos <= 59 ) {
+      WiFi.disconnect(true);
+      delay(20000);
+    }
     Serial.println("");
     delay(1000);
   }
@@ -116,8 +120,8 @@ void setup() {
   tft.fillScreen(TFT_BLACK);
 
   // Inicialização das multitarefas
-  xTaskCreatePinnedToCore(tarefa1, "loop1", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE0);
-  xTaskCreatePinnedToCore(tarefa2, "loop2", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE1);
+  xTaskCreatePinnedToCore(tarefa1, "loop1", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+  xTaskCreatePinnedToCore(tarefa2, "loop2", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
 }
 
 void loop() {
