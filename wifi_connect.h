@@ -14,7 +14,7 @@ void conecta_wifi() {
 
   while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
-    delay(500);
+    vTaskDelay(pdMS_TO_TICKS(500)); //ticks para ms (Delay)
   }
 
   Serial.println("");
@@ -23,5 +23,5 @@ void conecta_wifi() {
   Serial.println(WiFi.localIP());
   Serial.print("Endereço MAC: ");
   Serial.println(WiFi.macAddress());
-  delay(500);
+  vTaskDelay(pdMS_TO_TICKS(500)); //ticks para ms (Delay)
 }

@@ -5,6 +5,7 @@
 // Inicio da função dos sensores
 float media (int n, float *v_ultrason);
 float sens_ultra = 0;
+float compara;
 long duration;
 float distance;
 float v_ultrason[10];
@@ -39,10 +40,14 @@ void mede_distancia() {
 
   //chamada da função
   if (i > 10) {
-    sens_ultra = media(10, v_ultrason);
+    compara =  media(10, v_ultrason);
   }
-  Serial.print("    Media: ");
-  Serial.print(sens_ultra);
+  if (compara != sens_ultra) {
+    sens_ultra = compara;
+    Serial.print("    Media: ");
+    Serial.print(sens_ultra);
+  }
+
 
 }
 

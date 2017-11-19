@@ -1,8 +1,8 @@
-#if CONFIG_FREERTOS_UNICORE
-#define ARDUINO_RUNNING_CORE 0
-#else
-#define ARDUINO_RUNNING_CORE 1
-#endif
+//#if CONFIG_FREERTOS_UNICORE
+//#define ARDUINO_RUNNING_CORE 0
+//#else
+//#define ARDUINO_RUNNING_CORE 1
+//#endif
 
 #include "data_hora.h"
 #include "sensor_ultrason.h"
@@ -14,8 +14,8 @@
 // Funções Multitarefas
 void tarefa1( void * pvParameters ) {
   while (true) {
-    Serial.print("Core: ");
-    Serial.print(xPortGetCoreID());
+    Serial.print("Executando tarefa1 no nucleo: ");
+    Serial.println(xPortGetCoreID());
     Serial.print("   ");
     conta_litros();
     Serial.print("   ");
@@ -24,28 +24,31 @@ void tarefa1( void * pvParameters ) {
     dataehora();
     Display();
     Serial.println("");
-    delay(1000);
+    vTaskDelay(pdMS_TO_TICKS(1000)); //ticks para ms (Delay)
   }
 }
 
 void tarefa2( void * pvParameters ) {
   while (true) {
-    Serial.print("Core: ");
-    Serial.print(xPortGetCoreID());
+    Serial.print("Executando tarefa2 no nucleo: ");
+    Serial.println(xPortGetCoreID());
     Serial.print("   ");
     conecta_DB();
     escreve_SD();
     if (minutos == 59 && segundos > 55 && segundos <= 59 ) {
       WiFi.disconnect(true);
-      delay(20000);
+      vTaskDelay(pdMS_TO_TICKS(20000)); //ticks para ms (Delay)
     }
     Serial.println("");
-    delay(1000);
+    vTaskDelay(pdMS_TO_TICKS(1000)); //ticks para ms (Delay)
   }
 }
 
 void setup() {
   Serial.begin(115200);
+
+  Serial.print("Executando setup() no nucleo: ");
+  Serial.println(xPortGetCoreID());
 
   // Sensor Utrasônico
   pinMode(trigPin, OUTPUT); // Define o trigPin como uma saída
@@ -88,7 +91,7 @@ void setup() {
 
     tft.setTextColor(TFT_RED, TFT_BLACK);
     tft.drawString("Falha!", 90, 105, 1);
-    delay ( 2000 );
+    vTaskDelay(pdMS_TO_TICKS(2000)); //ticks para ms (Delay)
     tft.fillScreen(TFT_BLACK);
     return;
   }
@@ -116,15 +119,17 @@ void setup() {
   Serial.printf("Tamanho do SDCard: %lluMB\n", cardSize);
   Serial.printf("Espaço total: %lluMB\n", SD.totalBytes() / (1024 * 1024));
   Serial.printf("Espaço usado: %lluMB\n", SD.usedBytes() / (1024 * 1024));
-  delay ( 2000 );
+  vTaskDelay(pdMS_TO_TICKS(2000)); //ticks para ms (Delay)
   tft.fillScreen(TFT_BLACK);
 
   // Inicialização das multitarefas
-  xTaskCreatePinnedToCore(tarefa1, "loop1", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
-  xTaskCreatePinnedToCore(tarefa2, "loop2", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+  xTaskCreate(tarefa1, "loop1", 4096, NULL, 1, NULL);
+  xTaskCreate(tarefa2, "loop2", 4096, NULL, 1, NULL);
 }
 
 void loop() {
+  Serial.print("loop executando no nucleo: ");
+  Serial.println(xPortGetCoreID());
   // Não faça nada aqui
   vTaskDelay(portMAX_DELAY); // aguarde o máximo possível ...
 }

@@ -11,14 +11,17 @@
 //void soft_reset();
 
 // INSERT
-char INSERT_DATA[] = "INSERT INTO cisterna.sensores (user_id, s_ultrasson, s_fluxo) VALUES (%d,%.1f,%.1f)";
-char query[128];
+char INSERT_DATA_DIST[] = "INSERT INTO cisterna.s_ultrasson (user_id, distancia) VALUES (%d,%.1f)";
+char dist_query[128];
+
+char INSERT_DATA_FLUX[] = "INSERT INTO cisterna.s_fluxo (user_id, litros) VALUES (%d,%.1f)";
+char flux_query[128];
 
 // SELECT
 //
 // Observe o "%lu" - esse é um espaço reservado para o parâmetro que forneceremos.
 // Consulte a documentação sprintf () para mais opções de especificação de formatação
-const char QUERY_POP[] = "SELECT s_ultrasson, s_fluxo FROM cisterna.sensores WHERE user_id > %lu ORDER BY criado DESC;";
+const char QUERY_POP[] = "SELECT s_ultrasson, s_fluxo FROM cisterna.sensores WHERE user_id = %lu ORDER BY criado DESC;";
 char selec[128];
 
 WiFiClient client;
@@ -39,19 +42,33 @@ void envia_recebe() {
 
   // Inicio gravação DB
   // Inicia a consulta da instância de classe
-  MySQL_Cursor *cur_memi = new MySQL_Cursor(&conn);
+  MySQL_Cursor *cur_mem_dist = new MySQL_Cursor(&conn);
   // Salvar
-  //dtostrf(50.125, 1, 1, temperature);
-  sprintf(query, INSERT_DATA, usuario, sens_ultra, sens_fluxo);
+  sprintf(dist_query, INSERT_DATA_DIST, usuario, sens_ultra);
   // Execute a consulta
-  cur_memi->execute(query);
+  cur_mem_dist->execute(dist_query);
   // Nota: uma vez que não há resultados, não precisamos ler nenhum dado
   // Deleta ponteiro para liberar memória
-  delete cur_memi;
-  Serial.println("> Dados gravados.");
+  delete cur_mem_dist;
+  Serial.println("> Dados distancia gravados.");
   Serial.println("");
+
+
+  MySQL_Cursor *cur_mem_flux = new MySQL_Cursor(&conn);
+  // Salvar
+  sprintf(flux_query, INSERT_DATA_FLUX, usuario, sens_fluxo);
+  // Execute a consulta
+  cur_mem_flux->execute(flux_query);
+  // Nota: uma vez que não há resultados, não precisamos ler nenhum dado
+  // Deleta ponteiro para liberar memória
+  delete cur_mem_flux;
+  Serial.println("> Dados fluxo gravados.");
+  Serial.println("");
+
   // Fim gravação DB
-  //
+
+
+
   // Inicio leitura DB
   Serial.println("< Lendo Banco de Dados");
   Serial.println("");
@@ -63,7 +80,7 @@ void envia_recebe() {
   // alocar um buffer para todas as consultas formatadas ou alocar na
   // memória conforme necessário (apenas certifique-se de alocar memória suficiente e
   // livre-a quando terminar!).
-  sprintf(selec, QUERY_POP, 0);
+  sprintf(selec, QUERY_POP, usuario);
   // Execute a consulta
   cur_mem->execute(selec);
   // Procure as colunas e imprima-as
@@ -119,7 +136,7 @@ void conecta_DB() {
     } else {
       Serial.println("Conectando...");
       if (conn.connect(server_addr, 3306, user, password)) {
-        delay(1000);
+        vTaskDelay(pdMS_TO_TICKS(1000)); //ticks para ms (Delay)
         // Vai para função envia_recebe
         envia_recebe();
       } else {
@@ -127,7 +144,7 @@ void conecta_DB() {
         Serial.println("Falha na conexão!");
         if (num_fails == MAX_FAILED_CONNECTS) {
           Serial.println("Ok, é isso. Estou fora. Reiniciando...");
-          delay(2000);
+          vTaskDelay(pdMS_TO_TICKS(2000)); //ticks para ms (Delay)
           // Aqui, pedimos para reiniciar redirecionando para a função de reboot.
           soft_reset();
         }
