@@ -103,5 +103,4 @@ void dataehora() {
     rtc_dataehora();
   }
 }
-
 #endif
