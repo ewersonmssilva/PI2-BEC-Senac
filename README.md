@@ -1,2 +1,1 @@
-# PI2-BEC-Senac
-Projeto integrador Engenharia de Computação 2º semestre
+PI_Senac-nodemcu-32s

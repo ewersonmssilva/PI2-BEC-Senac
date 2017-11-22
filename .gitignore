@@ -1,0 +1,12 @@
+
+\.directory
+
+\.clang_complete
+
+\.pioenvs/
+
+\.vscode/
+
+*.yml
+
+*.json
