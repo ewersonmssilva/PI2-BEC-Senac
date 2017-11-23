@@ -7,49 +7,66 @@
 
 uint64_t cardSize = SD.cardSize() / (1024 * 1024);
 //Serial.printf("SD Card Size: %lluMB\n", cardSize);
+File myFile;                   //Cria um ponteiro para arquivo
 
+void appendFileSfluxo()
+{
+        dataehora();
+        RtcDateTime now = Rtc.GetDateTime();
 
-void writeFile(fs::FS &fs, const char * path, const char * message) {
-  Serial.printf("Writing file: %s\n", path);
+        //Cria string de dados para armazenar no cartão SD
+        //Utilizando arquivo do tipo Comma Separete Value
+        String dataString = String(sens_fluxo) + ", " + String(now);
 
-  File file = fs.open(path, FILE_WRITE);
-  if (!file) {
-    Serial.println("Failed to open file for writing");
-    return;
-  }
-  if (file.print(message)) {
-    Serial.println("File written");
-  } else {
-    Serial.println("Write failed");
-  }
-  file.close();
+        //Abre o arquivo para escrita
+        //Apenas um arquivo pode ser aberto de cada vez
+        File myFile = SD.open("/s_fluxo.csv", FILE_APPEND);
+        if (myFile)
+        {
+                myFile.println(dataString);
+                myFile.close();
+                Serial.println(dataString);
+        } //end if logFile
+        else
+        {
+                Serial.println("Erro ao abrir arquivo para escrita final");
+        }
 }
 
-void appendFile(fs::FS &fs, const char * path, const char * message) {
-  Serial.printf("Appending to file: %s\n", path);
+void appendFileSultrason()
+{
+        dataehora();
+        RtcDateTime now = Rtc.GetDateTime();
 
-  File file = fs.open(path, FILE_APPEND);
-  if (!file) {
-    Serial.println("Failed to open file for appending");
-    return;
-  }
-  if (file.print(message)) {
-    Serial.println("Message appended");
-  } else {
-    Serial.println("Append failed");
-  }
-  file.close();
+        //Cria string de dados para armazenar no cartão SD
+        //Utilizando arquivo do tipo Comma Separete Value
+        String dataString = String(sens_ultra) + ", " + String(now);
+
+        //Abre o arquivo para escrita
+        //Apenas um arquivo pode ser aberto de cada vez
+        File myFile = SD.open("/s_ultrason.csv", FILE_APPEND);
+        if (myFile)
+        {
+                myFile.println(dataString);
+                myFile.close();
+                Serial.println(dataString);
+        } //end if logFile
+        else
+        {
+                Serial.println("Erro ao abrir arquivo para escrita final");
+        }
 }
-
 
 void escreve_SD() {
-  if (minutos == 20 && segundos == 22 || minutos == 40 && segundos == 22 || minutos == 58 && segundos == 22) {
-    //writeFile(SD, "/sensores.txt", datestring);
-    //appendFile(SD, "/sensores.txt", valor);
-    appendFile(SD, "/sensores.txt", "\n");
-    appendFile(SD, "/sensores.txt", "Fluxo  ");
-    appendFile(SD, "/sensores.txt", " Ultra ");
-    appendFile(SD, "/sensores.txt", datestring);
-  }
+        if (minutos == 20 && segundos == 22 || minutos == 40 && segundos == 22 || minutos == 58 && segundos == 22)
+        {
+                //writeFile(SD, "/sensores.txt", datestring);
+                //appendFile(SD, "/sensores.txt", valor);
+                appendFileSfluxo();
+                appendFileSultrason();
+                //appendFile(SD, "/sensores.txt", "Fluxo  ");
+                //appendFile(SD, "/sensores.txt", " Ultra ");
+                //appendFile(SD, "/sensores.txt", datestring);
+        }
 }
 #endif

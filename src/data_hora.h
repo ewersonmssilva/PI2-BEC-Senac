@@ -26,81 +26,88 @@ const char* TZ_INFO    = "EST2EDT4,M3.2.0/02:00:00,M11.1.0/02:00:00";
 struct tm timeinfo;
 
 void ntp_dataehora() {
-  configTzTime(TZ_INFO, NTP_SERVER);
-  if (getLocalTime(&timeinfo)) {
-    Serial.print(&timeinfo, "%m/%d/%Y %H:%M:%S ");
-    Serial.println(&timeinfo);
+        configTzTime(TZ_INFO, NTP_SERVER);
+        if (getLocalTime(&timeinfo)) {
+                Serial.print(&timeinfo, "%m/%d/%Y %H:%M:%S ");
+                Serial.println(&timeinfo);
 
-    mes = timeinfo.tm_mon;
-    dia = timeinfo.tm_mday;
-    ano = timeinfo.tm_year + 1900;
-    horas = timeinfo.tm_hour;
-    minutos = timeinfo.tm_min;
-    segundos = timeinfo.tm_sec;
+                mes = timeinfo.tm_mon;
+                dia = timeinfo.tm_mday;
+                ano = timeinfo.tm_year + 1900;
+                horas = timeinfo.tm_hour;
+                minutos = timeinfo.tm_min;
+                segundos = timeinfo.tm_sec;
 
-    RtcDateTime ntp_timestamp = time(&now);
-    RtcDateTime now = Rtc.GetDateTime();
+                RtcDateTime ntp_timestamp = time(&now);
+                RtcDateTime now = Rtc.GetDateTime();
 
-    if (now > ntp_timestamp + 5 || now < ntp_timestamp - 5)
-    {
-      RtcDateTime now = Rtc.GetDateTime();
-      printDateTime(now);
-      Serial.println(" O RTC está desatualizado  (Atualizando)");
-      Rtc.SetDateTime(ntp_timestamp);
-    }
-  }
-  {
-    datestring[20];
-    snprintf_P(datestring,
-               countof(datestring),
-               PSTR("%02u/%02u/%04u %02u:%02u:%02u"),
-               mes,
-               dia,
-               ano,
-               horas,
-               minutos,
-               segundos);
-    Serial.print(datestring);
-    Serial.print("  Data e Hora no NTP ");
-  }
+                if (now > ntp_timestamp + 5 || now < ntp_timestamp - 5)
+                {
+                        RtcDateTime now = Rtc.GetDateTime();
+                        printDateTime(now);
+                        Serial.println(" O RTC está desatualizado  (Atualizando)");
+                        Rtc.SetDateTime(ntp_timestamp);
+                }
+        }
+        {
+                datestring[20];
+                snprintf_P(datestring,
+                           countof(datestring),
+                           PSTR("%02u/%02u/%04u %02u:%02u:%02u"),
+                           mes,
+                           dia,
+                           ano,
+                           horas,
+                           minutos,
+                           segundos);
+                Serial.print(datestring);
+                Serial.print("  Data e Hora no NTP ");
+        }
 }
 
-void printDateTime(const RtcDateTime& dt)
-{
-  datestring[20];
+void printDateTime(const RtcDateTime& dt){
+        datestring[20];
 
-  snprintf_P(datestring,
-             countof(datestring),
-             PSTR("%02u/%02u/%04u %02u:%02u:%02u"),
-             dt.Month(),
-             dt.Day(),
-             dt.Year(),
-             dt.Hour(),
-             dt.Minute(),
-             dt.Second() );
-  Serial.print(datestring);
-  mes = dt.Month();
-  dia = dt.Day();
-  ano = dt.Year();
-  horas = dt.Hour();
-  minutos = dt.Minute();
-  segundos = dt.Second();
-  Serial.println(" Data e Hora no RTC");
+        snprintf_P(datestring,
+                   countof(datestring),
+                   PSTR("%02u/%02u/%04u %02u:%02u:%02u"),
+                   dt.Month(),
+                   dt.Day(),
+                   dt.Year(),
+                   dt.Hour(),
+                   dt.Minute(),
+                   dt.Second() );
+        Serial.print(datestring);
+        mes = dt.Month();
+        dia = dt.Day();
+        ano = dt.Year();
+        horas = dt.Hour();
+        minutos = dt.Minute();
+        segundos = dt.Second();
+        Serial.println(" Data e Hora no RTC");
 }
 
-void rtc_dataehora ()
-{
-  RtcDateTime now = Rtc.GetDateTime();
-  printDateTime(now);
-  Serial.println();
+void rtc_dataehora (){
+        RtcDateTime now = Rtc.GetDateTime();
+        printDateTime(now);
+        Serial.println();
 
 }
 
 void dataehora() {
-  if (WiFi.status() == WL_CONNECTED) {
-    ntp_dataehora();
-  } else {
-    rtc_dataehora();
-  }
+        if (WiFi.status() == WL_CONNECTED) {
+                ntp_dataehora();
+        } else {
+                rtc_dataehora();
+        }
 }
+
+
+void convert_time_SD(){
+
+  time_t raw_time = atoi("1346426869");
+  printf("current time is %s",ctime(&raw_time));
+
+}
+
 #endif

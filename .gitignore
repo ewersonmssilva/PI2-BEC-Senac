@@ -14,3 +14,5 @@
 .piolibdeps
 .clang_complete
 .gcc-flags.json
+
+lib/EDB_ADD/

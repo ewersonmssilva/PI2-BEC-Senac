@@ -9,8 +9,8 @@ const int trigPin = 2;
 const int echoPin = 4;
 
 // WiFi Config
-const char* ssid = "SEU-SSID"; // Seu SSID
-const char* pass =  "SUA-SENHA"; // Sua senha
+const char* ssid = "NetVirtua-80"; // Seu SSID
+const char* pass =  "ferreirasantos"; // Sua senha
 
 // Definir aqui o numero do usuario para ser identificado no DB
 #define usuario 1
