@@ -23,27 +23,17 @@ include_once("conexao.php");
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">PI 2 Senac</a>
+          <a class="navbar-brand" href="index.php">PI 2 Senac</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
+            <li><a href="g_linhas.php">Graficos</a></li>
+            <li><a href="administrativo.php">Admin</a></li>
             <li><a href="cadastrar_user.php">Cadastrar</a></li>
             <li><a href="#contact">Contato</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
-			<li><a href="#about">Sobre</a></li>
-			<li><a href="sair.php">Sair</a></li>
+			      <li><a href="#about">Sobre</a></li>
+			      <li><a href="sair.php">Sair</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -55,10 +45,10 @@ include_once("conexao.php");
 			echo $_SESSION['msg'];
 			unset($_SESSION['msg']);
 		}
-		?>      
+		?>
 <form id="cadastro" name="cadastro" method="post" action="processa_cad.php" onsubmit="return validaCampo(); return false;">
-<br><br>
-  <table width="625" border="0">
+<div style="position:absolute; top: 80px; left: 20px;">
+  <table width="800" border="0">
     <tr>
       <td width="87">Nome:</td>
       <td width="528"><input name="nome" type="text" id="nome" size="70" maxlength="60" />
@@ -73,7 +63,7 @@ include_once("conexao.php");
       <td><input name="cpf" type="text" id="cpf" size="13" maxlength="11" />
       <span class="style1">*</span>
       <span class="style3">Apenas n&uacute;meros</span> </td>
-    </tr>  
+    </tr>
     <tr>
       <td>DDD:</td>
       <td><input name="ddd" type="text" id="ddd" size="4" maxlength="2" />
@@ -148,17 +138,18 @@ include_once("conexao.php");
       <td>Nr. Pessoas:</td>
       <td><input name="memb_familia" type="text" id="memb_familia" size="4" maxlength="2" />
           <span class="style1">*</span></td>
-    </tr>
+    </tr>   
     <tr>
-      <td colspan="2"><p>
-        <input name="cadastrar" type="submit" id="cadastrar" value="Concluir o Cadastro!" /> 
-        <br />
+      <td colspan="2"><p><br>
+        <input name="cadastrar" type="submit" id="cadastrar" value="Concluir o Cadastro!" />
+        <br /><br>
           <input name="limpar" type="reset" id="limpar" value="Limpar Campos preenchidos!" />
-          <br />
+          <br /><br>
           <span class="style1">* Campos com * s&atilde;o obrigat&oacute;rios!          </span></p>
       <p>&nbsp; </p></td>
     </tr>
   </table>
+  </div>
 </form>
 	</body>
 </html>
