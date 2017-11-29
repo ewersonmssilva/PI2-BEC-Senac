@@ -31,7 +31,7 @@ void ntp_dataehora() {
                 Serial.print(&timeinfo, "%m/%d/%Y %H:%M:%S ");
                 Serial.println(&timeinfo);
 
-                mes = timeinfo.tm_mon;
+                mes = timeinfo.tm_mon +1;
                 dia = timeinfo.tm_mday;
                 ano = timeinfo.tm_year + 1900;
                 horas = timeinfo.tm_hour;
@@ -41,9 +41,14 @@ void ntp_dataehora() {
                 RtcDateTime ntp_timestamp = time(&now);
                 RtcDateTime now = Rtc.GetDateTime();
 
+Serial.print(now);
+Serial.print("   ");
+Serial.print(ntp_timestamp);
+Serial.print("   ");
                 if (now > ntp_timestamp + 5 || now < ntp_timestamp - 5)
                 {
                         RtcDateTime now = Rtc.GetDateTime();
+Serial.println(now);
                         printDateTime(now);
                         Serial.println(" O RTC está desatualizado  (Atualizando)");
                         Rtc.SetDateTime(ntp_timestamp);

@@ -16,6 +16,11 @@ void Display()
 {
         targetTime = millis();
         yield();
+
+        if (segundos == 01 || segundos == 15 || segundos == 30 || segundos == 45)
+        {
+                tft.fillScreen (TFT_BLACK);
+        }
         // Primeiro, preenche com um conjunto de cores de fundo
         tft.setTextSize(1);
         //tft.fillScreen(TFT_BLACK);
@@ -24,14 +29,14 @@ void Display()
         tft.drawString("PI2 SENAC", 30, 5, 2);
 
         tft.setTextColor(TFT_CYAN, TFT_BLACK);
-        tft.drawString("S. Fluxo:", 20, 30, 2);
+        tft.drawString("Consumo l:", 10, 30, 2);
         tft.drawFloat(sens_fluxo, 1, 80, 30, 2);
 
-        tft.setTextColor(TFT_BLUE, TFT_BLACK);
-        tft.drawString("S. Ultra:", 20, 50, 2);
+        tft.setTextColor(TFT_CYAN, TFT_BLACK);
+        tft.drawString("Volume %:", 10, 50, 2);
         //tft.drawFloat(pi,precision,xpos,ypos,font); // Imprime float
         //pi = 3.14159 e a precisão é 2 ele imprimirá 3.14
-        tft.drawFloat(sens_ultra, 1, 80, 50, 2);
+        tft.drawFloat(percent, 1, 80, 50, 2);
 
         tft.setTextColor(TFT_PURPLE, TFT_BLACK);
         //tft.drawString("SDCard:", 13, 70, 2);
