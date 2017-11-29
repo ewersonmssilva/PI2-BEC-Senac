@@ -124,7 +124,7 @@
 
         var map = new google.maps.Map(document.getElementById('map'), {
 
-          center: new google.maps.LatLng(-25.494938, -49.294372),
+          center: new google.maps.LatLng(-7.4757462, -41.0128778),
 
           zoom: 9
 
