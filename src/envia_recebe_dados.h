@@ -24,6 +24,9 @@ char flux_query[128];
 const char QUERY_POP[] = "SELECT s_ultrasson, s_fluxo FROM cisterna.sensores WHERE user_id = %lu ORDER BY criado DESC;";
 char selec[128];
 
+const char QUERY_POP_CONS[] = "SELECT litros FROM cisterna.s_fluxo WHERE user_id = %lu";
+char select_consumo[32];
+
 WiFiClient client;
 MySQL_Connection conn((Client *)&client);
 
