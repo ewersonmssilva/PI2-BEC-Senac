@@ -14,7 +14,7 @@
 char INSERT_DATA_DIST[] = "INSERT INTO cisterna.s_ultrasson (user_id, distancia) VALUES (%d,%.1f)";
 char dist_query[128];
 
-char INSERT_DATA_FLUX[] = "INSERT INTO cisterna.s_fluxo (user_id, litros) VALUES (%d,%.1f)";
+char INSERT_DATA_FLUX[] = "UPDATE cisterna.s_fluxo SET litros='%.1f' WHERE user_id = '%lu'";
 char flux_query[128];
 
 // SELECT
@@ -58,7 +58,7 @@ void envia_recebe()
 
         MySQL_Cursor *cur_mem_flux = new MySQL_Cursor(&conn);
         // Salvar
-        sprintf(flux_query, INSERT_DATA_FLUX, usuario, sens_fluxo);
+        sprintf(flux_query, INSERT_DATA_FLUX, consumo, usuario);
         // Execute a consulta
         cur_mem_flux->execute(flux_query);
         // Nota: uma vez que não há resultados, não precisamos ler nenhum dado
@@ -103,6 +103,8 @@ void envia_recebe()
                         for (int f = 0; f < cols->num_fields; f++)
                         {
                                 Serial.print(row->values[f]);
+
+
                                 if (f < cols->num_fields - 1) {
                                         Serial.print(',');
                                 }
@@ -153,6 +155,7 @@ void conecta_DB()
                                 Serial.println("Falha na conexão!");
                                 if (num_fails == MAX_FAILED_CONNECTS)
                                 {
+                                        escreve_SD(); // Envia dados dos sensores para o SDCard antes de reiniciar
                                         Serial.println("Ok, é isso. Estou fora. Reiniciando...");
                                         vTaskDelay(pdMS_TO_TICKS(2000)); //ticks para ms (Delay)
                                         // Aqui, pedimos para reiniciar redirecionando para a função de reboot.

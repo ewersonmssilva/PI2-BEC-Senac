@@ -10,6 +10,7 @@
 #include "sensor_ultrason.h"
 #include "sensor_fluxo.h"
 #include "wifi_connect.h"
+#include "sd_card.h"
 #include "envia_recebe_dados.h"
 #include "display.h"
 
