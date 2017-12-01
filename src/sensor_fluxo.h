@@ -7,7 +7,7 @@ volatile int flow_frequency;   // Mede os pulsos do sensor de fluxo
 unsigned int l_hour;           // Calcula litro/hora
 int litrosAdd = 0;
 float litros = 0;
-float consumo = 0;
+int consumo = 0;
 //unsigned char flowmeter = 15;  // Número do pino do sensor de fluxo
 int contagem_comp = 0;
 

@@ -3,6 +3,7 @@
 
 #include <MySQL_Connection.h>
 #include <MySQL_Cursor.h>
+#include <string.h>
 #include "config.h"
 
 // Funções
@@ -70,8 +71,65 @@ void envia_recebe()
         Serial.println("> Dados fluxo gravados.");
         Serial.println("");
 
+
         // Fim gravação DB
 
+
+        // Inicio leitura DB Sensor de fluxo
+
+        //char c = ' ';
+        //char number[4];
+        //int i = 0;
+        int value = 0;
+        //String text_string;
+        char leitura[10];
+        //const char *string
+
+
+
+        Serial.println("< Lendo Banco de Dados Fuxo");
+        Serial.println("");
+        // Inicia a consulta da instância de classe
+        MySQL_Cursor *cur_mem_cons = new MySQL_Cursor(&conn);
+        // Forneça o parâmetro para a consulta
+        // Aqui usamos o QUERY_POP como a string de formato e consulta como o
+        // chamado. Isso usa duas vezes a memória, então outra opção seria
+        // alocar um buffer para todas as consultas formatadas ou alocar na
+        // memória conforme necessário (apenas certifique-se de alocar memória suficiente e
+        // livre-a quando terminar!).
+        sprintf(select_consumo, QUERY_POP_CONS, usuario);
+        // Execute a consulta
+        cur_mem_cons->execute(select_consumo);
+        // Procure as colunas
+        column_names *cols_cons = cur_mem_cons->get_columns();
+        Serial.println();
+        // Leia as linhas e imprima-as
+        row_values *row_cons = NULL;
+        do {
+                row_cons = cur_mem_cons->get_next_row();
+                if (row_cons != NULL) {
+                        for (int f = 0; f < cols_cons->num_fields; f++)
+                        {
+                                Serial.print(row_cons->values[f]);
+                                consumo = atoi(row_cons->values[f]);
+                                //value = leitura[f] -48;
+                        }
+                        Serial.println();
+                }
+        }
+
+        while (row_cons != NULL);
+        // Deleta ponteiro para liberar memória
+        Serial.print("Leitura: ");
+        Serial.println(*leitura);
+        //value = atoi(*leitura);
+        Serial.println();
+        Serial.print("Value: ");
+        Serial.print(value);
+        Serial.println();
+        delete cur_mem_cons;
+        Serial.println("< Fim leitura Fuxo");
+        // Fim leitura e gravação de dados no DB Sensor de fluxo
 
 
         // Inicio leitura DB

@@ -30,7 +30,7 @@ void Display()
 
         tft.setTextColor(TFT_CYAN, TFT_BLACK);
         tft.drawString("Consumo l:", 10, 30, 2);
-        tft.drawFloat(consumo, 1, 80, 30, 2);
+        tft.drawNumber(consumo, 80, 30, 2);
 
         tft.setTextColor(TFT_CYAN, TFT_BLACK);
         tft.drawString("Volume %:", 10, 50, 2);

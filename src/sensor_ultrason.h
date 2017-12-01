@@ -20,11 +20,11 @@ void mede_distancia()
         // Sensor Utrason
         // Limpa o trigPin
         digitalWrite(trigPin, LOW);
-        delayMicroseconds(2);
+        vTaskDelay (pdMS_TO_TICKS (2)); //ticks para ms (Delay)
 
         // Define o trigPin no estado HIGH durante 10 micro segundos
         digitalWrite(trigPin, HIGH);
-        delayMicroseconds(10);
+        vTaskDelay (pdMS_TO_TICKS (10)); //ticks para ms (Delay)
         digitalWrite(trigPin, LOW);
 
         // Lê o echoPin, retorna o tempo de viagem da onda sonora em microssegundos
@@ -52,21 +52,21 @@ void mede_distancia()
                 sens_ultra = compara;
                 Serial.print("    Media: ");
                 Serial.print(sens_ultra);
-                
+
                 float sens_ultra2 = sens_ultra - 16; //distancia do sensor até o vol total
                 Serial.print("    Ultra2 : ");
                 Serial.print(sens_ultra2);
 
                 float altura = (sens_ultra2 * 100) / 20; // altura_total de 0 a 100%
-                
+
                 //float altura = distancia_da_cisterna_vazia_ate_cheia;
                 //float raio = 0;
-                
+
                 //volume = (3.14 * (raio * raio)) * altura;
 
                 percent = 100 - altura;
-                
-                
+
+
         }
 
 
