@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "645521";
+$password = "password";
 $dbname = "cisterna";
 
 // Create connection
